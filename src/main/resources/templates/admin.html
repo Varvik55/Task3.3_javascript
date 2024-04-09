@@ -79,17 +79,36 @@
     </thead>
     <tbody>
 
-    <tr >
+    <tr th:each="user : ${people}">
         <td th:text="${user.getId()}"></td>
         <td th:text="${user.getAge()}"></td>
         <td th:text="${user.getUsername()}"></td>
         <td th:text="${user.getLastname()}"></td>
-
+        <td>
+            <ul>
+                <li th:each="role : ${user.roles}" th:text="${role.name}"></li>
+            </ul>
+        </td>
+        <td>
+            <a th:href="@{/admin/reg(id=${user.getId()})}">
+                <button>редактировать</button>
+            </a>
+        </td>
+        <td>
+            <a th:href="@{/admin/delete(id=${user.getId()})}">
+                <button>Удалить</button>
+            </a>
+        </td>
     </tr>
     </tbody>
 </table>
+<a th:href="@{admin/reg}">
+
+    <button>Добавить пользователя</button>
+
+</a>
 <a th:href="@{/logout}">
-<button>Выйти</button>
+    <button>Выйти</button>
 </a>
 </div>
 </body>

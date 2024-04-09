@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление|Изменения User</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            width: 50%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 12px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        button, a.btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            color: #fff;
+        }
+
+        button {
+            background-color: #007bff;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        a.btn {
+            background-color: #f8f9fa;
+            color: #333;
+            border: 1px solid #ccc;
+        }
+
+        a.btn:hover {
+            background-color: #e2e6ea;
+        }
+        div {
+            font-size: smaller; /* Задаем меньший размер шрифта */
+        }
+    </style>
+</head>
+<body>
+
+<h2>Введите данные о пользователе</h2>
+<form th:method="POST" th:action="@{/admin}" th:object="${user}">
+    <input type="hidden" th:field="*{id}" th:value="*{getId()}">
+
+    <div th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></div>
+    <label for="age">Возраст:</label><br>
+    <input type="text" id="age" name="age" th:value="${user.age}"><br>
+
+    <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+    <label for="username">Username:</label><br>
+    <input type="text" id="username" name="username" th:value="${user.username}"><br>
+
+    <div th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></div>
+    <label for="lastname">Фамилия:</label><br>
+    <input type="text" id="lastname" name="lastname" th:value="${user.lastname}"><br><br>
+
+    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+    <label for="password">Пароль:</label><br>
+    <input type="text" id="password" name="password" th:value="${user.password}"><br><br>
+
+    <p>
+        <label>Выберите роли:</label><br>
+    <div th:each="role : ${roles}">
+        <input type="checkbox" name="roles" th:value="${role.id}" th:checked="${user.roles.contains(role.id)}">
+        <label th:text="${role.name}"></label><br>
+    </div>
+    </p>
+
+    <button class="btn btn-secondary" type="submit" th:text="*{getId()} ? 'Сохранить' : 'Создать'"/>
+    <a class="btn btn-light border-dark" href="/admin">Cancel</a>
+</form>
+</body>
+</html>

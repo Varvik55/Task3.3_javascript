@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.configs;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
@@ -15,6 +16,7 @@ public class PeopleConfig {
     private final RoleService roleService;
     private final UserService userService;
 
+    @Autowired
     PeopleConfig (RoleService roleService, UserService userService) {
         this.roleService = roleService;
         this.userService = userService;

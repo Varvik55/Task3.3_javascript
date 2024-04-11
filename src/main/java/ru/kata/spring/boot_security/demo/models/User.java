@@ -1,7 +1,6 @@
 package ru.kata.spring.boot_security.demo.models;
 
 
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -14,26 +13,26 @@ import java.util.Set;
 
 @Entity
 @Table(uniqueConstraints= @UniqueConstraint(columnNames={"id", "username"}))
+
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @NotEmpty
     @NotBlank(message = "Поле не должно быть пустым")
     @Size(min = 2, max = 30, message = "Поле должно содержать от 2 до 30 символов")
-    @Pattern(regexp = "^[A-Za-z]+$", message = "Имя должно содержать только буквы")
     @Column(unique=true)
     private String username;
 
     @NotBlank(message = "Поле не должно быть пустым")
-    @Size(min = 2, max = 30, message = "Поле должно содержать от 2 до 30 символов")
+    @Size(min = 2, max = 100, message = "Поле должно содержать от 2 до 30 символов")
     private String password;
 
     @Size(min = 2, max = 30, message = "Поле должно содержать от 2 до 30 символов")
     @Pattern(regexp = "^[A-Za-z]+$", message = "Фамилия должна содержать только буквы")
     private String lastname;
 
-    @NotNull(message = "Поле не должно быть пустым")
+
     @Min(value = 1, message = "Возраст должен быть от одного года")
     @Max(value = 150, message = "возраст не может быть больше 150 лет")
     private Integer age=1;

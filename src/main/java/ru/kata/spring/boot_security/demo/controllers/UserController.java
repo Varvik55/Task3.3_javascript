@@ -1,5 +1,7 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,7 +23,13 @@ public class UserController {
     }
 
     @GetMapping("/user")
-    public String userPAge (Principal principal, Model model){
+    public String userPAge (Principal principal, Model model, @AuthenticationPrincipal UserDetails userDetails){
+
+            boolean isAdmin = userDetails.getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+            model.addAttribute("isAdmin", isAdmin);
+
+
         User user = userService.getUserByLogin(principal.getName());
         model.addAttribute("user",user);
         return "user";

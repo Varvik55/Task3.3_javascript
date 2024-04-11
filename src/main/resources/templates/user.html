@@ -68,6 +68,14 @@
     </style>
 </head>
 <body>
+<div th:if="${isAdmin}">
+    <!-- Если есть, то отображаем кнопку "ADMIN" -->
+    <a th:href="@{/admin}">
+        <button>ADMIN</button>
+    </a>
+</div>
+
+<!-- Таблица и кнопка "Выйти" отображаются для всех пользователей -->
 <table>
     <thead>
     <tr>
@@ -78,19 +86,18 @@
     </tr>
     </thead>
     <tbody>
-
-    <tr >
+    <tr>
         <td th:text="${user.getId()}"></td>
         <td th:text="${user.getAge()}"></td>
         <td th:text="${user.getUsername()}"></td>
         <td th:text="${user.getLastname()}"></td>
-
     </tr>
     </tbody>
 </table>
+
+<!-- Кнопка "Выйти" -->
 <a th:href="@{/logout}">
-<button>Выйти</button>
+    <button>Выйти</button>
 </a>
-</div>
 </body>
 </html>

@@ -76,23 +76,29 @@
 
 <h2>Введите данные о пользователе</h2>
 <form th:method="POST" th:action="@{/admin}" th:object="${user}">
+
     <input type="hidden" th:field="*{id}" th:value="*{getId()}">
 
-    <div th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></div>
+
     <label for="age">Возраст:</label><br>
     <input type="text" id="age" name="age" th:value="${user.age}"><br>
+    <div th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></div>
 
-    <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+
     <label for="username">Username:</label><br>
     <input type="text" id="username" name="username" th:value="${user.username}"><br>
+    <p th:if="${errorMessage}" th:text="${errorMessage}" style="color: red;"></p>
+    <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
 
-    <div th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></div>
+
     <label for="lastname">Фамилия:</label><br>
     <input type="text" id="lastname" name="lastname" th:value="${user.lastname}"><br><br>
+    <div th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></div>
 
-    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+
     <label for="password">Пароль:</label><br>
     <input type="text" id="password" name="password" th:value="${user.password}"><br><br>
+    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
 
     <p>
         <label>Выберите роли:</label><br>
@@ -101,9 +107,11 @@
         <label th:text="${role.name}"></label><br>
     </div>
     </p>
+    <p th:if="${errorMessageRole}" th:text="${errorMessageRole}" style="color: red;"></p>
+    <div th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}"></div>
 
     <button class="btn btn-secondary" type="submit" th:text="*{getId()} ? 'Сохранить' : 'Создать'"/>
-    <a class="btn btn-light border-dark" href="/admin">Cancel</a>
+    <a class="btn btn-light border-dark">Cancel</a>
 </form>
 </body>
 </html>

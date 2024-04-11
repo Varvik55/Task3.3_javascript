@@ -1,21 +1,23 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
+
+
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
+
 import javax.validation.Valid;
 import java.util.Set;
-import java.util.stream.Collectors;
+
 
 @Controller
-@Validated
 public class AdminController {
     private final UserService userService;
     private final RoleService roleService;
@@ -42,14 +44,31 @@ public class AdminController {
         return "reg";
     }
     @PostMapping("/admin")
-    public String createUser(@ModelAttribute("user") @Valid User user, @RequestParam(value = "roles", required = false) Set<Role> roles, BindingResult bindingResult) {
+    public String createUser(@Valid @ModelAttribute("user") User user,
+                             BindingResult bindingResult,
+                             @RequestParam(value = "roles", required = false) Set<Role> roles,
+                             Model model) {
 
-        if(bindingResult.hasErrors()){
-            return "reg";
-        }
-            user.setRoles(roles);
+        try {
+            if (bindingResult.hasErrors()) {
+                model.addAttribute("roles", roleService.getAllRoles());
+                return "reg"; // Возвращаем пользователя на страницу регистрации при наличии ошибок валидации
+            }
+
+            if (roles == null || roles.isEmpty()) {
+                model.addAttribute("errorMessageRole", "Выберите хотя бы одну роль.");
+                model.addAttribute("roles", roleService.getAllRoles());
+                return "reg"; // Возвращаем пользователя на страницу регистрации с сообщением об ошибке
+            }
+
             userService.saveNewUser(user);
-            return "redirect:/admin";
+            return "redirect:/admin"; // Перенаправляем пользователя на страницу успеха при успешном создании пользователя
+        } catch (DataIntegrityViolationException e) {
+            // Перехватываем исключение, связанное с нарушением ограничений целостности данных
+            model.addAttribute("errorMessage", "Произошла ошибка: имя пользователя уже существует.");
+            model.addAttribute("roles", roleService.getAllRoles());
+            return "reg"; // Возвращаем пользователя на страницу регистрации с сообщением об ошибке
+        }
     }
     @GetMapping("/admin/delete")
     public String deleteUser (@RequestParam(name = "id",required = false) Long id){

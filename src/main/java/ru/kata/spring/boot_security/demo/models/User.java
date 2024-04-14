@@ -33,9 +33,9 @@ public class User implements UserDetails {
     private String lastname;
 
 
-    @Min(value = 1, message = "Возраст должен быть от одного года")
+    @Min(value = 0, message = "Возраст должен быть от одного года")
     @Max(value = 150, message = "возраст не может быть больше 150 лет")
-    private Integer age=1;
+    private Integer age;
 
     @ManyToMany
     @JoinTable (name = "users_roles",

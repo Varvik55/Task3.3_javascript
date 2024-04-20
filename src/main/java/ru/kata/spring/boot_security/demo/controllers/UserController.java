@@ -28,4 +28,5 @@ public class UserController {
         User user  = userService.getUserByLogin(principal.getName());
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
+
 }

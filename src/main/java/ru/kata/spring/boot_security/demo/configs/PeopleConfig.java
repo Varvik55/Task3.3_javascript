@@ -24,10 +24,11 @@ public class PeopleConfig {
 
     @PostConstruct
     public void createData() {
-        Role roleAdmin = new Role("ROLE_ADMIN");
-        roleService.save(roleAdmin);
+
         Role roleUser = new Role("ROLE_USER");
         roleService.save(roleUser);
+        Role roleAdmin = new Role("ROLE_ADMIN");
+        roleService.save(roleAdmin);
         Set<Role> roles = new HashSet<>();
         roles.add(roleAdmin);
 

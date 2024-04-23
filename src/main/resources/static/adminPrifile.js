@@ -171,7 +171,7 @@ async function editModal(id) {
 
     editForm.addEventListener("submit", ev => {
         ev.preventDefault();
-        fetch("api/admin/" + id, {
+        fetch("/api/admin/" + id, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
